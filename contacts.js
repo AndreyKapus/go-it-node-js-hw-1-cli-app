@@ -17,13 +17,26 @@ async function listContacts() {
   }
 }
 
-console.log(listContacts());
-
-function getContactById(contactId) {
-  // ...твой код
+async function getContactById(contactId) {
+  try {
+    const data = fs.readFile(contactsPath, utf8);
+    const contacts = JSON.parse(data);
+    const findContactsById = contacts.filter(
+      (contact) => contact.id === Number(contactId)
+    );
+    return console.table(findContactsById);
+  } catch (error) {
+    console.error(error.messege);
+  }
 }
+console.table(getContactById());
 
-function removeContact(contactId) {
+async function removeContact(contactId) {
+  try {
+    const data = await fs.readFile(contactsPath, utf8);
+    const contacts = JSON.parse(data);
+    const deleteContact = contacts.find(contact => contact.id === contactId)
+  }
   // ...твой код
 }
 
