@@ -1,7 +1,9 @@
 const fs = require("fs").promises;
+const { errorMonitor } = require("events");
 const { readFile } = require("fs");
 const { dirname } = require("path");
 const path = require("path");
+const { nanoid } = require("nanoid");
 
 const contactsPath = path.resolve(__dirname, "db", "contacts.json");
 console.log(contactsPath);
@@ -11,20 +13,19 @@ async function listContacts() {
     const data = await fs.readFile(contactsPath, "utf8");
     const list = JSON.parse(data);
 
-    return console.table(list);
+    return list;
   } catch (error) {
     console.error(error.messege);
   }
 }
 
+console.table(listContacts());
+
 async function getContactById(contactId) {
   try {
-    const data = fs.readFile(contactsPath, utf8);
-    const contacts = JSON.parse(data);
-    const findContactsById = contacts.filter(
-      (contact) => contact.id === Number(contactId)
-    );
-    return console.table(findContactsById);
+    const data = await listContacts();
+    const findContactsById = data.find((contact) => contact.id === contactId);
+    return findContactsById;
   } catch (error) {
     console.error(error.messege);
   }
@@ -33,13 +34,22 @@ console.table(getContactById());
 
 async function removeContact(contactId) {
   try {
-    const data = await fs.readFile(contactsPath, utf8);
-    const contacts = JSON.parse(data);
-    const deleteContact = contacts.find(contact => contact.id === contactId)
+    const data = await listContacts();
+    // const contacts = JSON.parse(data);
+    const deleteContact = data.findIndex((contact) => contact.id !== contactId);
+
+    const result = await fs.writeFile(
+      contactsPath,
+      JSON.stringify(contactsPath, JSON.stringify(deleteContact, null, 2))
+    );
+    return result;
+  } catch {
+    console.log(error.messege);
   }
-  // ...твой код
 }
 
-function addContact(name, email, phone) {
-  // ...твой код
+async function addContact(name, email, phone) {
+  const id = nanoid();
+  const data = await fs.readFile(contactsPath, utf8);
+  const contacts = JSON.parse(data);
 }
