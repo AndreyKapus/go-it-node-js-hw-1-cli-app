@@ -52,4 +52,7 @@ async function addContact(name, email, phone) {
   const id = nanoid();
   const data = await fs.readFile(contactsPath, utf8);
   const contacts = JSON.parse(data);
+
+  contacts.push({ id, name, email, phone });
+  await fs.writeFile(contactsPath, JSON.stringify(contacts));
 }
