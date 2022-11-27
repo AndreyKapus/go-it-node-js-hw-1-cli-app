@@ -56,3 +56,5 @@ async function addContact(name, email, phone) {
   contacts.push({ id, name, email, phone });
   await fs.writeFile(contactsPath, JSON.stringify(contacts));
 }
+
+module.exports = { listContacts, getContactById, removeContact, addContact };
